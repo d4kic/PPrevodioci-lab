@@ -1,0 +1,19 @@
+program
+begin
+  a : integer;
+  b : char;
+  s : string;
+  f : file;
+  (* ovo je komentar *)
+  a = 0x1F + 017 - 25;
+  b = 'x';
+  s = ''neki tekst'';
+  f = open(s);
+  read(a in f) do
+  begin
+    c : integer;
+    c = a + 0
+  end
+end
+return
+
