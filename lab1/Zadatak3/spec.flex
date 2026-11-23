@@ -19,7 +19,6 @@ return new Yytoken( sym.EOF, null, yyline, yycolumn );
 %{
 //dodatni clanovi generisane klase
 KWTable kwTable = new KWTable();
-// Funkcija za prepoznavanje KW ili ID
 Yytoken getKW()
 {
 	return new Yytoken( kwTable.find( yytext() ),
@@ -41,9 +40,9 @@ ID = ({slovo}|{donjacrta})({slovo}|{cifra}|{donjacrta})*
 //konstante
 INT10 = 0|[1-9]{cifra}*
 INT8 = 0[0-7]+
-INT16 = 0[xX][0-9a-fA-F]+
-CHAR = ("'"|\u2018) [^\n\r'\u2018\u2019] ("'"|\u2019)
-STRING = "''" ( [^'\n\r] | "'" [^'\n\r] )* "''"
+INT16 = 0x[0-9a-fA-F]+
+CHAR = "'" [^\n\r'] "'"
+STRING = "''" [^'\n\r]* "''"
 
 %%
 
@@ -54,7 +53,7 @@ STRING = "''" ( [^'\n\r] | "'" [^'\n\r] )* "''"
 <KOMENTAR>[^] { ; }
 
 // whitespace
-[\t\n\r\f ] { ; }
+[\t\n\r ] { ; }
 
 // konstante
 {INT16}|{INT8}|{INT10}|{CHAR}|{STRING} { return new Yytoken( sym.CONST, yytext(), yyline, yycolumn ); }
@@ -64,7 +63,7 @@ STRING = "''" ( [^'\n\r] | "'" [^'\n\r] )* "''"
 
 // operatori i separatori
 \+ { return new Yytoken( sym.PLUS, yytext(), yyline, yycolumn ); }
-\- | \u2013 { return new Yytoken( sym.MINUS, yytext(), yyline, yycolumn ); }
+\- { return new Yytoken( sym.MINUS, yytext(), yyline, yycolumn ); }
 \( { return new Yytoken( sym.LPAREN, yytext(), yyline, yycolumn ); }
 \) { return new Yytoken( sym.RPAREN, yytext(), yyline, yycolumn ); }
 ; { return new Yytoken( sym.SEMICOLON, yytext(), yyline, yycolumn ); }
@@ -72,4 +71,4 @@ STRING = "''" ( [^'\n\r] | "'" [^'\n\r] )* "''"
 = { return new Yytoken( sym.ASSIGN, yytext(), yyline, yycolumn ); }
 
 // obrada gresaka
-. { System.out.println( "ERROR: " + yytext() + " line: " + (yyline+1) + " column: " + (yycolumn+1) ); }
+. { System.out.println( "ERROR: " + yytext()); }

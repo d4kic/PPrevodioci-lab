@@ -19,9 +19,13 @@ public class KWTable {
         mTable.put("do", sym.DO);
     }
 
-    public int find(String word) {
-        Integer code = mTable.get(word);
-        return (code == null) ? sym.ID : code;
+    public int find(String keyword)
+    {
+        Object symbol = mTable.get(keyword);
+        if (symbol != null)
+            return ((Integer)symbol).intValue();
+        // ako nije u tabeli onda je identifikator
+        return sym.ID;
     }
 }
 
